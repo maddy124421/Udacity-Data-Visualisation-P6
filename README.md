@@ -12,7 +12,12 @@ I have used both d3.js and dimple.js to visualise the data.I used the stacked ba
 ####Chart Selections:
 Stacked bar chart uses color to encode the category of data. I use it to present who survived and who did not.
 Interaction is used to categorize survival based on gender and Passenger class.
+
+
 Initial chart:
+
+https://github.com/maddy124421/Udacity-Data-Visualisation-P6/blob/master/initial_chart_titanic.jpg
+
 
 
 ###Feedback
