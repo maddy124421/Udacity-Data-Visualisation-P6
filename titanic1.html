@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<div class="container">
+
+  <h1>Who had the better chances of Titanic survival?</h1>
+
+  <p>How much of role did a passenger’s socio-economic status play on their chance of survival?<br>
+  Did Female passengers had higher chance of survival? Lets see. 
+  </p>
+
+<!--CSS styling container at top -->
+<style>
+  
+  .container {
+  border: 1px solid #dbd6d6;
+  padding-left: 200px;
+  border-radius: 3px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  }
+
+  h1 {
+  text-align: center; 
+  padding-top: 1px;
+  margin-top: 1px;
+  }
+
+</style>
+
+</div>
+
+<div id="chartContainer">
+
+<button id="btn_0"  class="paging-button">Total passengers</button>
+<button id="btn_1"  class="paging-button">Survival Rate by Gender</button>
+<button id="btn_2"  class="paging-button">Survival Rate by Class</button>
+
+</div>
+
+<head>
+  <meta charset="utf-8">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+
+  <style>   
+       /*Button styling specification and position */     
+    .paging-button {
+        position: fixed;
+        padding: 0px;
+        margin: 0px;
+        background:#599bb3;
+        color:#ffffff;
+        height: 50px; 
+        width: 100px;
+        }   
+    #btn_0 {  
+        top: 150px;
+        right: 50px;
+        }
+    #btn_1 {  
+        position: fixed;
+        top: 150px;
+        right: 250px;   
+        }
+    #btn_2 {  
+        top: 150px;
+        right: 150px;
+        }  
+           
+  </style> 
+
+  <script type="text/javascript">
+      //var svg = dimple.newSvg("#chartContainer", 1250,800);
+        function draw(data) {
+      /*
+        D3.js setup code
+      */  for (i = 0; i < data.length; i++)
+            {
+              data[i]['Total'] = 1;
+              if (data[i]['Survived'] == 0)
+              {
+               data[i]['Survival_Status'] = "Not Survived";
+              }
+             else
+              {
+               data[i]['Survival_Status'] = "Survived";
+              }
+            }   
+           
+          d3.select("body")
+            .append("h2");
+          
+       /* Dimple.js Chart construction code
+      */ 
+        /* Intro chart code */
+          var svg = dimple.newSvg("#chartContainer", 1400,500)
+
+          var myChart = new dimple.chart(svg, data);
+          myChart.setBounds(400, 200, 700, 250)  /*set boundaries of the chart for chart placement */
+          var myXaxis = myChart.addCategoryAxis("x", "Pclass");
+          var myYaxis = myChart.addPctAxis("y","Total");
+          myChart.addSeries("Sex", dimple.plot.bar); /* classifies based on gender*/
+          myChart.addLegend(400, 150, 500, 200,"right");
+
+          svg.append("text")
+          .attr("x", myChart._xPixels() + myChart._widthPixels() / 2)
+          .attr("y", myChart._yPixels() - 150)
+          .style("font-family", "sans-serif")
+          .style("color", "Black")
+          .style("text-anchor", "middle")
+          .text("Passengers distribution based on Gender and Passenger class");
+
+          myXaxis.title = "Passenger's Class";  /* assigns title for the x and y axis */
+          myYaxis.title = "Percentage of Passengers";
+
+          myChart.draw();
+
+          /* Button Click Events handler */
+          d3.select("#btn_0").on("click", function() {
+
+          d3.select("svg").remove(); /* removes all other charts to place this chart */
+
+          var svgt = dimple.newSvg("#chartContainer", 1400,500)
+
+          var myChart = new dimple.chart(svgt, data);
+          myChart.setBounds(400, 200, 700, 250)
+          var myXaxis = myChart.addCategoryAxis("x", "Pclass");
+          var myYaxis = myChart.addPctAxis("y","Total");
+          myChart.addSeries("Sex", dimple.plot.bar);
+          myChart.addLegend(500, 150, 500, 200,"right");
+             
+          svgt.append("text")   
+          .attr("x", myChart._xPixels() + myChart._widthPixels() / 2)
+          .attr("y", myChart._yPixels() - 100)
+          .style("font-family", "sans-serif")
+          .style("color", "Black")
+          .style("font-weight", "bold")
+          .style("text-anchor", "middle")
+          .text("Passengers distribution based on Gender and Passenger class");
+
+          myXaxis.title = "Passenger's Class";
+          myYaxis.title = "Percentage of Passengers";
+
+          myChart.draw();
+
+          });
+
+          /* Pclass based  chart*/
+          d3.select("#btn_2").on("click", function() {
+
+          d3.select("svg").remove();
+
+          var svgs = dimple.newSvg("#chartContainer", 1400,500)
+
+          var myChart1 = new dimple.chart(svgs, data);
+          myChart1.setBounds(400, 200, 700, 250)
+          var myXaxis1 = myChart1.addCategoryAxis("x", "Pclass");
+          var myYaxis1 = myChart1.addPctAxis("y","Total");
+          var mySeries = myChart1.addSeries("Survival_Status", dimple.plot.bar);
+          
+          myChart1.assignColor("Survived", "#9d6b9e", "gray", 1)
+          myChart1.assignColor("Not Survived", "#8DD3C7", "gray", 1)
+          var myLegend = myChart1.addLegend(500, 150, 500, 200,"right");
+          
+          svgs.append("text")
+          .attr("x", myChart1._xPixels() + myChart1._widthPixels() / 2)
+          .attr("y", myChart1._yPixels()-100)
+          .style("font-family", "sans-serif")
+          .style("color", "Black")
+          .style("font-weight", "bold")
+          .style("text-anchor", "middle")
+          .text("Survival based on Passenger class");
+
+          myXaxis1.title = "Passenger's Class";
+          myYaxis1.title = "Percentage of Passengers";
+
+          myChart1.draw();
+        
+          });
+          
+          /* Gender based  chart*/
+          d3.select("#btn_1").on("click", function() {
+
+          d3.select("svg").remove();
+
+          var svgc = dimple.newSvg("#chartContainer", 1400,500)
+
+          var myChart2 = new dimple.chart(svgc, data);
+          myChart2.setBounds(400, 200, 700, 250)
+          var myXaxis2 = myChart2.addCategoryAxis("x", "Sex");
+          var myYaxis2 = myChart2.addPctAxis("y","Total");
+          var s=myChart2.addSeries("Survival_Status", dimple.plot.bar);
+          myChart2.assignColor("Survived", "#B3DE69", "gray", 1)
+          myChart2.assignColor("Not Survived", "#FFED6F", "gray", 1)
+          var myLegend = myChart2.addLegend(500, 150, 500, 200,"right");
+
+          svgc.append("text")
+          .attr("x", myChart2._xPixels() + myChart2._widthPixels() / 2)
+          .attr("y", myChart2._yPixels()-100)
+          .style("font-family", "sans-serif")
+          .style("color", "Black")
+          .style("font-weight", "bold")
+          .style("text-anchor", "middle")
+          .text("Survival based on Gender")
+          myXaxis2.title = "Passenger's Gender";
+          myYaxis2.title = "Percentage of Passengers";
+          myChart2.draw();
+
+          });
+        };
+  </script>
+</head>
+<body>
+  <script type="text/javascript">
+  /*
+    Use D3 (not dimple.js) to load the TSV fileand pass the contents of it to the draw function
+    */
+  d3.csv("stage_1.csv", draw);
+  </script>
+</body>
+
+<div class="bottomContainer">
+  <center><p>The charts show that the female passengers and the Passenger of class 1 had higher chances of Survival.<br>  
+  </p></center>
+
+<style>
+/* styling the bottom of the chart */
+  .bottomContainer {
+  border: 1px solid #dbd6d6;
+  padding-left: 15px;
+  border-radius: 1px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  }
+</style>
+
+</div>
+</html>
