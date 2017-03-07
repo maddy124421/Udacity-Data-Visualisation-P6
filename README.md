@@ -52,8 +52,11 @@ I switched from Number of Survival to Survival Rates since the amount of passeng
 ###Resources
 
 dimple.js Documentation
+
 Data Visualization and D3.js (Udacity)
+
 mbostock's blocks
+
 Dimple homepage
 
 ###Data
