@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<div id="chartContainer"></div>
+
+<head>
+  <meta charset="utf-8">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+    <script type="text/javascript">
+    var svg = dimple.newSvg("#chartContainer", 1250,800);
+      function draw(data) {
+      
+      /*
+        D3.js setup code
+      */  for (i = 0; i < data.length; i++)
+            {
+              data[i]['Total'] = 1;
+              if (data[i]['Survived'] == 0)
+              {
+               data[i]['Survival_Status'] = "Survived";
+              }
+             else
+              {
+               data[i]['Survival_Status'] = "Not Survived";
+              }
+            }                   
+          svg.append('g')
+             .attr('class','chart');
+          
+            
+      /*
+        Dimple.js Chart construction code
+      */
+          var myChart = new dimple.chart(svg, data);
+          myChart.setBounds(400, 100, 700, 250)
+          var myXaxis = myChart.addCategoryAxis("x", "Pclass");
+          var myYaxis = myChart.addMeasureAxis("y","Total");
+          myChart.addSeries("Sex", dimple.plot.bar);
+          myChart.addLegend(400, 80, 500, 200,"right");
+          svg.append("text")
+          .attr("x", myChart._xPixels() + myChart._widthPixels() / 2)
+          .attr("y", myChart._yPixels() - 35)
+          .style("font-family", "sans-serif")
+          .style("color", "Black")
+          .style("font-weight", "bold")
+          .style("text-anchor", "middle")
+          .text("Passengers based on Gender and Passenger class")
+          myXaxis.title = "Passenger's Class";
+          myYaxis.title = "Passengers travelled";
+          myChart.draw();
+          var myChart1 = new dimple.chart(svg, data);
+          myChart1.setBounds(200, 450, 550, 200)
+          var myXaxis1 = myChart1.addCategoryAxis("x", "Pclass");
+          var myYaxis1 = myChart1.addMeasureAxis("y","Total");
+          myChart1.addSeries("Survived", dimple.plot.bar);
+          var myLegend = myChart1.addLegend(300, 420, 500, 200,"right");
+          myLegend.text="survived";
+          svg.append("text")
+          .attr("x", myChart1._xPixels() + myChart1._widthPixels() / 2)
+          .attr("y", myChart1._yPixels() - 20)
+          .style("font-family", "sans-serif")
+          .style("color", "Black")
+          .style("font-weight", "bold")
+          .style("text-anchor", "middle")
+          .text("Survival based on Passenger class")
+          myXaxis1.title = "Passenger's Class";
+          myYaxis1.title = "Passengers travelled";
+          myChart1.draw();
+          var myChart2 = new dimple.chart(svg, data);
+          myChart2.setBounds(850, 450, 400, 200)
+          var myXaxis2 = myChart2.addCategoryAxis("x", "Sex");
+          var myYaxis2 = myChart2.addMeasureAxis("y","Total");
+          myChart2.addSeries("Survived", dimple.plot.bar);
+          svg.append("text")
+          .attr("x", myChart2._xPixels() + myChart1._widthPixels() / 2)
+          .attr("y", myChart2._yPixels() - 20)
+          .style("font-family", "sans-serif")
+          .style("color", "Black")
+          .style("font-weight", "bold")
+          .style("text-anchor", "middle")
+          .text("Survival based on Gender")
+          myXaxis2.title = "Passenger's Gender";
+          myYaxis2.title = "Passengers travelled";
+          myChart2.draw();
+        };
+      </script>
+  </head>
+<body>
+  <script type="text/javascript">
+  /*
+    Use D3 (not dimple.js) to load the TSV file
+    and pass the contents of it to the draw function
+    */
+  d3.csv("stage_1.csv", draw);
+  </script>
+</body>
+</html>
