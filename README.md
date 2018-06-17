@@ -16,7 +16,7 @@ Interaction is used to categorize survival based on gender and Passenger class.
 
 Initial chart:
 
-Please find the initial chart of the titanic dataset
+Please find the initial chart of the titanic dataset.
 
 https://github.com/maddy124421/Udacity-Data-Visualisation-P6/blob/master/initial_chart_titanic.jpg
 
